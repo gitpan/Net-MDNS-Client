@@ -15,7 +15,7 @@ char * mdnsc_make_query(char * query_type, char * hostname, char * service, char
  *	Send a query (using query string and query types from above)
  *	Call returns immediately, call get_a_result to get responses
  */
-void mdnsc_query(char *query_type, char *query_string);
+int mdnsc_query(char *query_type, char *query_string);
 /*
  *	Call with the same options as query to cancel that query 
  */

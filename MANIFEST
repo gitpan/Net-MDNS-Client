@@ -31,3 +31,4 @@ mdns/xht.h
 mdns_relay.pl
 ppport.h
 t/1.t
+META.yml                                 Module meta-data (added by MakeMaker)

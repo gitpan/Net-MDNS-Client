@@ -31,7 +31,7 @@ our @EXPORT = qw(
 	MAX_STRING
 );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
@@ -89,7 +89,7 @@ Net::MDNS::Client - Perl extension for the multicast DNS client.
 
 =head1 ABSTRACT
 
-  Multicast DNS allows all computers on the network to answer DNS queries.  There is no central DNS, every computer answers questions regarding itself, and keeps quite if the query concerns another machine.  Multicast queries tend to be things like "all http server, please announce yourself", and you get a list of all nearby https servers, or printers, or whatever you asked for.
+  Multicast DNS allows all computers on the network to answer DNS queries.  There is no central DNS, every computer answers questions regarding itself, and keeps quite if the query concerns another machine.  Multicast queries tend to be things like "all http servers, please announce yourself", and you get a list of all nearby https servers, or printers, or whatever you asked for.
   This client allows you to query the multicast DNS servers on your network.  It may even work with Apple's rendevous software.
   The companion module, Net::DNS::Server, allows your computer to become a multicast DNS server.
 
@@ -123,7 +123,7 @@ It is slightly naughty to only call process_network_events when you are looking 
 make_query builds a query string to be used by the 'query' and 'cancel_query' functions.  If you are familiar with multicast DNS queries you can skip this step and build your own.  For everyone else, use this one. 
 	You may omit either the hostname or the service name.  The domain should always be "local." (other may be used, but local is the local network).  The protocol should be "tcp" or "udp".
 
-e.g. make_query("host by service", "", "smtp", "local.", "tcp");
+e.g. make_query("host by service", "", "local.", "smtp", "tcp");
 
 =item query(query_type, $query_string);
 
@@ -133,7 +133,7 @@ query sends a query to the network.  It returns control immediately, and you sho
 	
 Supply exactly the same parameters as you did to query.
 
-=item get_a_response(query_type, $query_string);
+=item get_a_result(query_type, $query_string);
 
 Supply exactly the same parameters as you did to query.  mdnsd keeps a list of responses, and will give you one response from the list each time you call it until it gets to the end of the list, where it returns undef.  The next call to get_a_response will start from the beginning of the list again.
 
@@ -174,6 +174,10 @@ There is a program called relay.pl included in this distribution.  It will relay
 Jepri, jepri@perlmonk.org (Perl and C wrappers)
 
 Jer, jer@jabber.org	(C library)
+
+=head1 THANKS
+
+Michael Bauer
 
 
 =head1 COPYRIGHT AND LICENSE
