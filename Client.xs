@@ -5,7 +5,7 @@
 #include "ppport.h"
 
 #include <netinet/in.h>
-#include <../../../../mdns-wrapper/mdns_client.h>
+#include <./mdns/mdns_client.h>
 
 #include "const-c.inc"
 

@@ -10,6 +10,8 @@
 #include "sdtxt.h"
 #include "mdns_client.h"
 
+#define DEBUG 0
+
 int mdnsc_daemon_socket;
 int mdnsc_something_happened=0;
 mdnsd mdnsc_daemon;
@@ -146,14 +148,29 @@ mdnsc_get_a_result(char *query_type, char * query_string)
 void
 mdnsc_query(char *query_type, char *query_string)
 {
+#if DEBUG
+	printf("Received query string ->|%s|<- and query type ->|%s|<-\n", query_string, query_type);
+#endif
 	if (!strcmp("host by service", query_type))
-		{ mdnsd_query(mdnsc_daemon,query_string, QTYPE_PTR,mdnsc_query_callback,0);}
+		{ 
+#if DEBUG
+			printf("Sending query ->|%s|<- for hosts by service\n", query_string);
+#endif
+			mdnsd_query(mdnsc_daemon,query_string, QTYPE_PTR,mdnsc_query_callback,0);}
 
 	if (!strcmp("ip by hostname", query_type))
-		{  mdnsd_query(mdnsc_daemon,query_string, QTYPE_A,mdnsc_query_callback,0);}
+		{
+#if DEBUG
+			printf("Sending query ->|%s|<- for ip by hostname\n", query_string);
+#endif
+			mdnsd_query(mdnsc_daemon,query_string, QTYPE_A,mdnsc_query_callback,0);}
 
 	if (!strcmp("data by hostname", query_type))
-		{ mdnsd_query(mdnsc_daemon,query_string, QTYPE_SRV,mdnsc_query_callback,0);}
+		{ 
+#if DEBUG
+			printf("Sending query ->|%s|<- for data by hostname\n", query_string);
+#endif
+			mdnsd_query(mdnsc_daemon,query_string, QTYPE_SRV,mdnsc_query_callback,0);}
 }
 
 /*	Use exactly the same terms as the original query to cancel the query */

@@ -31,7 +31,7 @@ our @EXPORT = qw(
 	MAX_STRING
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
@@ -77,11 +77,11 @@ Net::MDNS::Client - Perl extension for the multicast DNS client.
 
   use Net::MDNS::Client ':all';
   my $q = make_query("host by service", "", "local.", "perl", "tcp");
-  query( $q, "host by service");
+  query( "host by service", $q);
   while (1) {
    if (process_network_events()) {
     while (1) {
-    my $res = get_a_result($q, "host by service");
+    my $res = get_a_result("host by service", $q);
      print "Found host: ", $res, "\n";
       sleep 1;
    } } }

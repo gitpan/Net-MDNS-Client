@@ -36,13 +36,14 @@ sub reply_handler
 						{ $query = $qname.'.local.'; }
 				}
 			print "\nSending query !$query! to the multicast network\n";
-			query($query, "ip by hostname");
+			query("ip by hostname", $query);
 			my $t = time();
 			while(time()-$t<1)
 				{
 					if(process_network_events()) 
 						{
-							my %res = get_ip($query, "ip by hostname");
+							print "Retreiving value for query $query\n";
+							my %res = get_ip("ip by hostname", $query);
 							print "Found a value:  ", $res{ip}, "\n";
 							if ($res{ip})
 								{
@@ -56,7 +57,7 @@ sub reply_handler
 							}
 						}
 				}
-			my %res = get_ip($query, "ip by hostname");
+			my %res = get_ip("ip by hostname", $query);
 			if ($res{ip})
 				{
 					print "Found ip !$res{ip}!\n";
@@ -74,14 +75,14 @@ sub reply_handler
 
 sub get_ip
 	{
-		my ($query, $query_type) = @_;
+		my ($query_type, $query) = @_;
 		my %res;
 		#Ensure we are at the start of the list
 		while (1)
 		{
-		last unless get_a_result($query, "ip by hostname");
+		last unless get_a_result("ip by hostname", $query);
 		}
-		%res = get_a_result($query, $query_type);
+		%res = get_a_result($query_type, $query);
 		print "Found a value:  ", join(", ", %res), "\n";
 		return %res;
 	}
