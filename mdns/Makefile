@@ -1,11 +1,11 @@
 all: mquery mhttp libmdns_server.so libmdns_client.so libmdns_client.a libmdns_server.a tests
 
 install: all
-	cp libmdns_client.so libmdns_server.so /usr/lib
-	ln -s /usr/lib/libmdns_client.so /usr/lib/libmdns_client.so.0
-	ln -s /usr/lib/libmdns_client.so /usr/lib/libmdns_client.so.0.0.0
-	ln -s /usr/lib/libmdns_server.so /usr/lib/libmdns_server.so.0
-	ln -s /usr/lib/libmdns_server.so /usr/lib/libmdns_server.so.0.0.0
+	cp libmdns_client.so libmdns_server.so /usr/lib  || true
+	ln -s /usr/lib/libmdns_client.so /usr/lib/libmdns_client.so.0  || true
+	ln -s /usr/lib/libmdns_client.so /usr/lib/libmdns_client.so.0.0.0  || true
+	ln -s /usr/lib/libmdns_server.so /usr/lib/libmdns_server.so.0  || true
+	ln -s /usr/lib/libmdns_server.so /usr/lib/libmdns_server.so.0.0.0  || true
 
 mhttp: mhttp.c
 	gcc -g -o mhttp mhttp.c mdnsd.c 1035.c sdtxt.c xht.c

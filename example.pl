@@ -3,7 +3,8 @@ use lib './blib/arch/';
 use lib './blib/lib/';
 use Net::MDNS::Client ':all';
 
-my $q = make_query("host by service", "", "local.", "perl", "tcp");
+my $service = shift;
+my $q = make_query("host by service", "", "local.", $service, "tcp");
 print "Query is !$q!\n";
 query( "host by service", $q);
 

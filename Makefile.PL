@@ -1,5 +1,18 @@
 use 5.008;
 use ExtUtils::MakeMaker;
+
+my $o = $Config{_o};
+print "Attempting to compile and install supporting libraries to /usr/lib\n";
+chdir "./mdns";
+system qw [ make install];
+chdir "../";
+
+sub MY::postamble	{
+'
+$(MYEXTLIB): mdns/Makefile
+	cd mdns && $(MAKE) $(PASSTHRU)
+';
+}
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(
@@ -8,10 +21,11 @@ WriteMakefile(
     'PREREQ_PM'		=> {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'Client.pm', # retrieve abstract from module
-       AUTHOR     => 'root <root@internal.cyberhqz.com>') : ()),
-    'LIBS'		=> [''], # e.g., '-lm'
+       AUTHOR     => 'Jepri <jepri@perlmonk.org>') : ()),
+		'LDFROM'	=>	'$(OBJECT) ./mdns/libmdns_client.so ',
+    'LIBS'		=> ['-L./mdns/ -lmdns_client'], # e.g., '-lm'
     'DEFINE'		=> '', # e.g., '-DHAVE_SOMETHING'
-    'INC'		=> '-I.', # e.g., '-I. -I/usr/include/other'
+    'INC'		=> '-I. -I./mdns', # e.g., '-I. -I/usr/include/other'
 		'MYEXTLIB'	=>	'./mdns/libmdns_client$(LIB_EXT)',
 	# Un-comment this if you add C files to link with later:
     # 'OBJECT'		=> '$(O_FILES)', # link all the C files too
@@ -38,15 +52,4 @@ else {
     my $fallback = File::Spec->catfile('fallback', $file);
     copy ($fallback, $file) or die "Can't copy $fallback to $file: $!";
   }
-}
-
-print "Attempting to compile and install supporting libraries to /usr/lib\n";
-chdir "./mdns";
-system qw [ make install];
-
-sub MY::postamble	{
-'
-$(MYEXTLIB): mdns/Makefile
-	cd mdns && $(MAKE) $(PASSTHRU)
-';
 }
